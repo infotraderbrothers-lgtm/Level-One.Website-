@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Level One - Advanced AI Solutions</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loader">
+        <div class="loader-triangles">
+            <div class="triangle triangle-1"></div>
+            <div class="triangle triangle-2"></div>
+            <div class="triangle triangle-3"></div>
+        </div>
+        <div class="loader-text" id="loaderText"></div>
+    </div>
+
+    <!-- Glass Shatter Overlay -->
+    <canvas id="glassCanvas"></canvas>
+
+    <!-- Hexagonal Background -->
+    <canvas id="hexBackground"></canvas>
+
+    <!-- Navigation -->
+    <nav id="mainNav">
+        <div class="logo" onclick="showPage('home')">
+            <div class="logo-icon">
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#00d4ff;stop-opacity:1" />
+                            <stop offset="50%" style="stop-color:#a78bfa;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#ec4899;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <!-- Main lightning bolt shape -->
+                    <path d="M 65 15 L 35 50 L 50 50 L 30 85 L 70 45 L 55 45 Z" 
+                          fill="url(#logoGradient)" 
+                          stroke="none"/>
+                    <!-- Accent circle -->
+                    <circle cx="80" cy="75" r="8" fill="url(#logoGradient)"/>
+                </svg>
+            </div>
+            <div class="logo-text">LEVEL ONE</div>
+        </div>
+        <div class="nav-menu">
+            <button class="nav-btn" data-number="01" onclick="showPage('about')">About</button>
+            <button class="nav-btn" data-number="02" onclick="showPage('services')">Services</button>
+            <button class="nav-btn" data-number="03" onclick="showPage('technology')">Technology</button>
+            <button class="nav-btn" data-number="04" onclick="showPage('contact')">Contact</button>
+        </div>
+    </nav>
+
+    <!-- Home Page -->
+    <div id="home" class="page">
+        <h1 class="home-title">NEXT-LEVEL AI</h1>
+        <p class="home-subtitle">Pioneering the Future of Artificial Intelligence</p>
+        <div id="hologram-container">
+            <div id="hologram">
+                <div class="pyramid">
+                    <div class="pyramid-face face-front" onclick="openPyramid('front')" data-symbol="◬">
+                        <div class="pyramid-symbol">◬</div>
+                    </div>
+                    <div class="pyramid-face face-back" onclick="openPyramid('back')" data-symbol="◭">
+                        <div class="pyramid-symbol">◭</div>
+                    </div>
+                    <div class="pyramid-face face-left" onclick="openPyramid('left')" data-symbol="◮">
+                        <div class="pyramid-symbol">◮</div>
+                    </div>
+                    <div class="pyramid-face face-right" onclick="openPyramid('right')" data-symbol="◯">
+                        <div class="pyramid-symbol">◯</div>
+                    </div>
+                    <div class="pyramid-face face-base"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Page -->
+    <div id="about" class="page content-page hidden">
+        <div class="page-symbol" onclick="returnHome()">◬</div>
+        <div class="page-image">🧠</div>
+        <h1 class="page-title">Neural Networks</h1>
+        <div class="page-content">
+            <p>Our advanced neural network architecture processes information similar to the human brain, enabling unprecedented learning capabilities and decision-making accuracy. With deep learning layers and adaptive algorithms, we push the boundaries of artificial intelligence.</p>
+            <br>
+            <p>Founded by visionaries in machine learning and neural networks, we combine advanced research with practical applications to deliver transformative AI systems that adapt, learn, and evolve.</p>
+        </div>
+    </div>
+
+    <!-- Services Page -->
+    <div id="services" class="page content-page hidden">
+        <div class="page-symbol" onclick="returnHome()">◭</div>
+        <div class="page-image">⚡</div>
+        <h1 class="page-title">Quantum Processing</h1>
+        <div class="page-content">
+            <p>Leveraging quantum-inspired algorithms, our systems achieve computational speeds that traditional architectures cannot match. This revolutionary approach enables us to solve complex problems in real-time, opening new possibilities in AI applications.</p>
+            <br>
+            <p><strong>Neural Network Development:</strong> Custom deep learning architectures designed for your specific use cases.</p>
+            <br>
+            <p><strong>AI Integration:</strong> Seamlessly integrate advanced AI capabilities into your existing infrastructure.</p>
+            <br>
+            <p><strong>Predictive Analytics:</strong> Harness the power of AI to forecast trends and optimize decision-making.</p>
+        </div>
+    </div>
+
+    <!-- Technology Page -->
+    <div id="technology" class="page content-page hidden">
+        <div class="page-symbol" onclick="returnHome()">◮</div>
+        <div class="page-image">∞</div>
+        <h1 class="page-title">Infinite Learning</h1>
+        <div class="page-content">
+            <p>Our AI systems never stop learning. Through continuous data ingestion and model refinement, they become more intelligent over time. This perpetual learning cycle ensures your solutions remain cutting-edge and adaptive to changing environments.</p>
+            <br>
+            <p><strong>Quantum-Inspired Algorithms:</strong> Next-generation computing approaches that deliver unprecedented processing power.</p>
+            <br>
+            <p><strong>Adaptive Learning Systems:</strong> AI that continuously improves and evolves based on new data and experiences.</p>
+            <br>
+            <p><strong>Distributed Intelligence:</strong> Scalable architectures that harness the power of distributed computing.</p>
+        </div>
+    </div>
+
+    <!-- Contact Page -->
+    <div id="contact" class="page content-page hidden">
+        <div class="page-symbol" onclick="returnHome()">◯</div>
+        <div class="page-image">📊</div>
+        <h1 class="page-title">Data Intelligence</h1>
+        <div class="page-content">
+            <p>Transform raw data into actionable insights with our advanced analytics platform. Our AI-driven data intelligence systems identify patterns, predict trends, and uncover opportunities that traditional analysis methods miss.</p>
+            <br>
+            <form class="contact-form" onsubmit="handleSubmit(event)">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="company">Company</label>
+                    <input type="text" id="company">
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">SEND MESSAGE</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
