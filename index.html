@@ -7,25 +7,47 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- LED Rain Background -->
+    <canvas id="ledRain"></canvas>
+
     <!-- Loading Screen -->
     <div id="loader">
-        <div class="loader-triangles">
-            <div class="triangle triangle-1"></div>
-            <div class="triangle triangle-2"></div>
-            <div class="triangle triangle-3"></div>
+        <div id="loaderContent">
+            <svg id="pyramidWireframe" width="400" height="400" viewBox="0 0 400 400">
+                <!-- Front left edge -->
+                <line class="pyramid-edge edge-1" x1="200" y1="100" x2="100" y2="300" stroke="white" stroke-width="2" stroke-dasharray="100 5 100"/>
+                <!-- Front right edge -->
+                <line class="pyramid-edge edge-2" x1="200" y1="100" x2="300" y2="300" stroke="white" stroke-width="2" stroke-dasharray="100 5 100"/>
+                <!-- Bottom edge -->
+                <line class="pyramid-edge edge-3" x1="100" y1="300" x2="300" y2="300" stroke="white" stroke-width="2" stroke-dasharray="95 5 95"/>
+                
+                <!-- Circles -->
+                <circle class="circle-small" cx="200" cy="200" r="80" fill="none" stroke="white" stroke-width="2" opacity="0" 
+                        stroke-dasharray="70 180" transform="rotate(0 200 200)"/>
+                <circle class="circle-large" cx="200" cy="200" r="140" fill="none" stroke="white" stroke-width="2" opacity="0"
+                        stroke-dasharray="660 240" transform="rotate(0 200 200)"/>
+            </svg>
+            
+            <div class="loader-text" id="loaderText"></div>
         </div>
-        <div class="loader-text" id="loaderText"></div>
     </div>
 
-    <!-- Glass Shatter Overlay -->
-    <canvas id="glassCanvas"></canvas>
-
-    <!-- Hexagonal Background -->
-    <canvas id="hexBackground"></canvas>
+    <!-- Mini Loader (for page transitions) -->
+    <div id="miniLoader" class="hidden">
+        <svg id="miniPyramid" width="200" height="200" viewBox="0 0 400 400">
+            <line class="pyramid-edge" x1="200" y1="100" x2="100" y2="300" stroke="white" stroke-width="2" stroke-dasharray="100 5 100"/>
+            <line class="pyramid-edge" x2="200" y1="100" x2="300" y2="300" stroke="white" stroke-width="2" stroke-dasharray="100 5 100"/>
+            <line class="pyramid-edge" x1="100" y1="300" x2="300" y2="300" stroke="white" stroke-width="2" stroke-dasharray="95 5 95"/>
+            <circle class="circle-small-mini" cx="200" cy="200" r="80" fill="none" stroke="white" stroke-width="2" opacity="0.5" 
+                    stroke-dasharray="70 180"/>
+            <circle class="circle-large-mini" cx="200" cy="200" r="140" fill="none" stroke="white" stroke-width="2" opacity="0.5"
+                    stroke-dasharray="660 240"/>
+        </svg>
+    </div>
 
     <!-- Navigation -->
     <nav id="mainNav">
-        <div class="logo" onclick="showPage('home')">
+        <div class="logo" onclick="navigateToHome()">
             <div class="logo-icon">
                 <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                     <defs>
@@ -35,100 +57,148 @@
                             <stop offset="100%" style="stop-color:#ec4899;stop-opacity:1" />
                         </linearGradient>
                     </defs>
-                    <!-- Main lightning bolt shape -->
                     <path d="M 65 15 L 35 50 L 50 50 L 30 85 L 70 45 L 55 45 Z" 
                           fill="url(#logoGradient)" 
                           stroke="none"/>
-                    <!-- Accent circle -->
                     <circle cx="80" cy="75" r="8" fill="url(#logoGradient)"/>
                 </svg>
             </div>
             <div class="logo-text">LEVEL ONE</div>
         </div>
-        <div class="nav-menu">
-            <button class="nav-btn" data-number="01" onclick="showPage('about')">About</button>
-            <button class="nav-btn" data-number="02" onclick="showPage('services')">Services</button>
-            <button class="nav-btn" data-number="03" onclick="showPage('technology')">Technology</button>
-            <button class="nav-btn" data-number="04" onclick="showPage('contact')">Contact</button>
+        <div class="nav-right">
+            <button class="triangle-btn" onclick="toggleSpecialMenu()">
+                <svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+                    <line x1="25" y1="10" x2="12" y2="35" stroke="white" stroke-width="2" stroke-dasharray="20 3"/>
+                    <line x1="25" y1="10" x2="38" y2="35" stroke="white" stroke-width="2" stroke-dasharray="20 3"/>
+                    <line x1="12" y1="35" x2="38" y2="35" stroke="white" stroke-width="2" stroke-dasharray="20 3"/>
+                </svg>
+            </button>
+            <button class="hamburger-btn" onclick="toggleMenu()">
+                <div class="hamburger-lines">
+                    <div class="line line-top"></div>
+                    <div class="line line-middle"></div>
+                    <div class="line line-bottom"></div>
+                </div>
+            </button>
         </div>
     </nav>
 
+    <!-- Regular Menu Overlay -->
+    <div id="menuOverlay" class="menu-overlay hidden">
+        <div class="menu-content">
+            <button class="menu-item" onclick="navigateTo('about')">About</button>
+            <button class="menu-item" onclick="navigateTo('services')">Services</button>
+            <button class="menu-item" onclick="navigateTo('technology')">Technology</button>
+            <button class="menu-item" onclick="navigateTo('contact')">Contact</button>
+        </div>
+    </div>
+
+    <!-- Special Triangle Menu -->
+    <div id="specialMenu" class="special-menu hidden">
+        <div class="special-menu-left">
+            <button class="special-menu-btn" onclick="selectSpecialPage('case1')">Healthcare AI Implementation</button>
+            <button class="special-menu-btn" onclick="selectSpecialPage('case2')">Financial Services Automation</button>
+            <button class="special-menu-btn" onclick="selectSpecialPage('case3')">Manufacturing Optimization</button>
+            <button class="special-menu-btn" onclick="selectSpecialPage('case4')">Retail Personalization</button>
+        </div>
+        <div class="special-menu-right">
+            <div id="floatingPyramid" class="floating-pyramid">
+                <div class="pyramid-face-float front-face" data-case="case1">
+                    <svg viewBox="0 0 100 150" xmlns="http://www.w3.org/2000/svg">
+                        <polygon points="50,10 10,140 90,140" fill="rgba(139, 92, 246, 0.3)" stroke="white" stroke-width="1"/>
+                    </svg>
+                </div>
+                <div class="pyramid-face-float right-face" data-case="case2">
+                    <svg viewBox="0 0 100 150" xmlns="http://www.w3.org/2000/svg">
+                        <polygon points="50,10 10,140 90,140" fill="rgba(109, 40, 217, 0.3)" stroke="white" stroke-width="1"/>
+                    </svg>
+                </div>
+                <div class="pyramid-face-float left-face" data-case="case3">
+                    <svg viewBox="0 0 100 150" xmlns="http://www.w3.org/2000/svg">
+                        <polygon points="50,10 10,140 90,140" fill="rgba(91, 33, 182, 0.3)" stroke="white" stroke-width="1"/>
+                    </svg>
+                </div>
+                <div class="pyramid-face-float back-face" data-case="case4">
+                    <svg viewBox="0 0 100 150" xmlns="http://www.w3.org/2000/svg">
+                        <polygon points="50,10 10,140 90,140" fill="rgba(124, 58, 237, 0.3)" stroke="white" stroke-width="1"/>
+                    </svg>
+                </div>
+                <!-- Connection lines -->
+                <div class="connection-line line-1"></div>
+                <div class="connection-line line-2"></div>
+                <div class="connection-line line-3"></div>
+                <div class="connection-line line-4"></div>
+            </div>
+        </div>
+    </div>
+
     <!-- Home Page -->
     <div id="home" class="page">
-        <h1 class="home-title">NEXT-LEVEL AI</h1>
-        <p class="home-subtitle">Pioneering the Future of Artificial Intelligence</p>
-        <div id="hologram-container">
-            <div id="hologram">
-                <div class="pyramid">
-                    <div class="pyramid-face face-front" onclick="openPyramid('front')" data-symbol="◬">
-                        <div class="pyramid-symbol">◬</div>
-                    </div>
-                    <div class="pyramid-face face-back" onclick="openPyramid('back')" data-symbol="◭">
-                        <div class="pyramid-symbol">◭</div>
-                    </div>
-                    <div class="pyramid-face face-left" onclick="openPyramid('left')" data-symbol="◮">
-                        <div class="pyramid-symbol">◮</div>
-                    </div>
-                    <div class="pyramid-face face-right" onclick="openPyramid('right')" data-symbol="◯">
-                        <div class="pyramid-symbol">◯</div>
-                    </div>
-                    <div class="pyramid-face face-base"></div>
-                </div>
-            </div>
+        <div class="home-content">
+            <p class="home-pretitle">Welcome to the Future</p>
+            <h1 class="home-title">NEXT-LEVEL AI</h1>
+            <p class="home-subtitle">Pioneering the Future of Artificial Intelligence</p>
+            <p class="home-description">We transform businesses through cutting-edge artificial intelligence solutions, delivering unprecedented efficiency, insights, and innovation. Our advanced neural networks and machine learning systems are designed to evolve with your needs, ensuring you stay ahead in an ever-changing digital landscape.</p>
         </div>
     </div>
 
     <!-- About Page -->
     <div id="about" class="page content-page hidden">
-        <div class="page-symbol" onclick="returnHome()">◬</div>
         <div class="page-image">🧠</div>
-        <h1 class="page-title">Neural Networks</h1>
+        <h1 class="page-title">About Level One</h1>
         <div class="page-content">
-            <p>Our advanced neural network architecture processes information similar to the human brain, enabling unprecedented learning capabilities and decision-making accuracy. With deep learning layers and adaptive algorithms, we push the boundaries of artificial intelligence.</p>
+            <p>Level One is at the forefront of artificial intelligence innovation, pushing the boundaries of what's possible with cutting-edge technology. Our mission is to create AI solutions that transcend traditional limitations and unlock new possibilities for humanity.</p>
             <br>
-            <p>Founded by visionaries in machine learning and neural networks, we combine advanced research with practical applications to deliver transformative AI systems that adapt, learn, and evolve.</p>
+            <p>Founded by visionaries in machine learning and neural networks, we combine advanced research with practical applications to deliver transformative AI systems that adapt, learn, and evolve. Our team of expert data scientists, engineers, and AI researchers work collaboratively to solve the world's most complex challenges.</p>
+            <br>
+            <p>With over a decade of experience in artificial intelligence, we've pioneered breakthrough technologies in natural language processing, computer vision, and predictive analytics. Our commitment to ethical AI development ensures that every solution we create is designed with human benefit and safety at its core.</p>
         </div>
     </div>
 
     <!-- Services Page -->
     <div id="services" class="page content-page hidden">
-        <div class="page-symbol" onclick="returnHome()">◭</div>
         <div class="page-image">⚡</div>
-        <h1 class="page-title">Quantum Processing</h1>
+        <h1 class="page-title">Our Services</h1>
         <div class="page-content">
-            <p>Leveraging quantum-inspired algorithms, our systems achieve computational speeds that traditional architectures cannot match. This revolutionary approach enables us to solve complex problems in real-time, opening new possibilities in AI applications.</p>
+            <p>We offer comprehensive AI solutions tailored to transform your business operations and drive unprecedented growth:</p>
             <br>
-            <p><strong>Neural Network Development:</strong> Custom deep learning architectures designed for your specific use cases.</p>
+            <p><strong>Neural Network Development:</strong> Custom deep learning architectures designed for your specific use cases. Our neural networks can process complex data patterns, make accurate predictions, and continuously improve through automated learning cycles.</p>
             <br>
-            <p><strong>AI Integration:</strong> Seamlessly integrate advanced AI capabilities into your existing infrastructure.</p>
+            <p><strong>AI Integration:</strong> Seamlessly integrate advanced AI capabilities into your existing infrastructure. We ensure minimal disruption while maximizing the value of your current systems through intelligent augmentation.</p>
             <br>
-            <p><strong>Predictive Analytics:</strong> Harness the power of AI to forecast trends and optimize decision-making.</p>
+            <p><strong>Predictive Analytics:</strong> Harness the power of AI to forecast trends, identify opportunities, and optimize decision-making. Our predictive models analyze historical data and real-time information to provide actionable insights.</p>
+            <br>
+            <p><strong>Natural Language Processing:</strong> Advanced language models for human-like communication and understanding. Enable your systems to comprehend, generate, and respond to human language with remarkable accuracy.</p>
+            <br>
+            <p><strong>Computer Vision:</strong> Transform visual data into intelligent insights. Our computer vision systems can identify objects, analyze scenes, and extract meaningful information from images and video streams.</p>
         </div>
     </div>
 
     <!-- Technology Page -->
     <div id="technology" class="page content-page hidden">
-        <div class="page-symbol" onclick="returnHome()">◮</div>
         <div class="page-image">∞</div>
-        <h1 class="page-title">Infinite Learning</h1>
+        <h1 class="page-title">Our Technology</h1>
         <div class="page-content">
-            <p>Our AI systems never stop learning. Through continuous data ingestion and model refinement, they become more intelligent over time. This perpetual learning cycle ensures your solutions remain cutting-edge and adaptive to changing environments.</p>
+            <p>Level One leverages breakthrough technologies in artificial intelligence to deliver unparalleled performance and reliability:</p>
             <br>
-            <p><strong>Quantum-Inspired Algorithms:</strong> Next-generation computing approaches that deliver unprecedented processing power.</p>
+            <p><strong>Quantum-Inspired Algorithms:</strong> Next-generation computing approaches that deliver unprecedented processing power. Our algorithms are designed to solve complex optimization problems that traditional systems cannot handle efficiently.</p>
             <br>
-            <p><strong>Adaptive Learning Systems:</strong> AI that continuously improves and evolves based on new data and experiences.</p>
+            <p><strong>Adaptive Learning Systems:</strong> AI that continuously improves and evolves based on new data and experiences. Our systems implement advanced reinforcement learning techniques that enable autonomous improvement without human intervention.</p>
             <br>
-            <p><strong>Distributed Intelligence:</strong> Scalable architectures that harness the power of distributed computing.</p>
+            <p><strong>Distributed Intelligence:</strong> Scalable architectures that harness the power of distributed computing. We leverage cloud infrastructure and edge computing to process massive datasets in real-time across global networks.</p>
+            <br>
+            <p><strong>Ethical AI Framework:</strong> Built-in safeguards ensuring responsible and beneficial AI deployment. Our framework includes bias detection, transparency mechanisms, and human oversight protocols to ensure AI systems remain aligned with human values.</p>
+            <br>
+            <p><strong>Neural Architecture Search:</strong> Automated discovery of optimal neural network designs for specific tasks. This cutting-edge technique allows us to create highly efficient models that outperform hand-crafted architectures.</p>
         </div>
     </div>
 
     <!-- Contact Page -->
     <div id="contact" class="page content-page hidden">
-        <div class="page-symbol" onclick="returnHome()">◯</div>
         <div class="page-image">📊</div>
-        <h1 class="page-title">Data Intelligence</h1>
+        <h1 class="page-title">Contact Us</h1>
         <div class="page-content">
-            <p>Transform raw data into actionable insights with our advanced analytics platform. Our AI-driven data intelligence systems identify patterns, predict trends, and uncover opportunities that traditional analysis methods miss.</p>
+            <p>Ready to transform your business with cutting-edge AI solutions? Get in touch with our team of experts to discuss your specific needs and discover how Level One can help you achieve your goals.</p>
             <br>
             <form class="contact-form" onsubmit="handleSubmit(event)">
                 <div class="form-group">
@@ -149,6 +219,93 @@
                 </div>
                 <button type="submit" class="submit-btn">SEND MESSAGE</button>
             </form>
+        </div>
+    </div>
+
+    <!-- Case Study Pages -->
+    <div id="case1" class="page content-page hidden">
+        <div class="page-image">🏥</div>
+        <h1 class="page-title">Healthcare AI Implementation</h1>
+        <div class="page-content">
+            <p><strong>Client:</strong> MediCare Global Healthcare Network</p>
+            <br>
+            <p><strong>Challenge:</strong> MediCare Global faced significant challenges in patient diagnosis accuracy and treatment planning efficiency across their 50+ hospital network. Emergency room wait times averaged 4.5 hours, and diagnostic errors occurred in approximately 12% of cases.</p>
+            <br>
+            <p><strong>Solution:</strong> We implemented a comprehensive AI-powered diagnostic assistance system integrated with their existing electronic health records. The system utilizes advanced neural networks trained on millions of medical cases to provide real-time diagnostic suggestions and treatment recommendations.</p>
+            <br>
+            <p><strong>Results:</strong></p>
+            <p>• Diagnostic accuracy improved by 34%, reducing misdiagnosis rates to below 3%</p>
+            <p>• Emergency room wait times decreased by 47% through intelligent patient triage</p>
+            <p>• Treatment planning efficiency increased by 56%, allowing doctors to see 40% more patients</p>
+            <p>• Patient satisfaction scores rose from 72% to 94%</p>
+            <p>• Annual cost savings of $23 million through optimized resource allocation</p>
+            <br>
+            <p><strong>Impact:</strong> The AI system now processes over 15,000 patient cases daily, providing physicians with instant access to relevant medical research, similar case histories, and evidence-based treatment protocols. The technology has been so successful that MediCare Global is expanding implementation to all 50 hospitals by the end of the year.</p>
+        </div>
+    </div>
+
+    <div id="case2" class="page content-page hidden">
+        <div class="page-image">💰</div>
+        <h1 class="page-title">Financial Services Automation</h1>
+        <div class="page-content">
+            <p><strong>Client:</strong> Apex Financial Group</p>
+            <br>
+            <p><strong>Challenge:</strong> Apex Financial Group struggled with fraud detection in their credit card processing system, experiencing losses of $18 million annually. Their manual review process for suspicious transactions created bottlenecks and resulted in high false-positive rates (68%), frustrating legitimate customers.</p>
+            <br>
+            <p><strong>Solution:</strong> We deployed an advanced machine learning fraud detection system that analyzes transaction patterns in real-time, incorporating behavioral biometrics, geolocation data, and historical spending patterns. The system continuously learns from new fraud attempts and adapts its detection algorithms.</p>
+            <br>
+            <p><strong>Results:</strong></p>
+            <p>• Fraud detection accuracy increased to 99.2%, catching fraudulent transactions in milliseconds</p>
+            <p>• False-positive rate reduced from 68% to 4%, dramatically improving customer experience</p>
+            <p>• Annual fraud losses decreased by 87%, saving $15.6 million</p>
+            <p>• Transaction processing speed improved by 73%</p>
+            <p>• Customer complaint volume related to blocked legitimate purchases dropped by 91%</p>
+            <br>
+            <p><strong>Impact:</strong> The AI system now monitors over 45 million transactions daily across Apex's customer base. Beyond fraud detection, the insights generated have enabled Apex to offer personalized financial product recommendations, increasing cross-sell revenue by $42 million annually. The system's success has positioned Apex as an industry leader in secure, intelligent financial services.</p>
+        </div>
+    </div>
+
+    <div id="case3" class="page content-page hidden">
+        <div class="page-image">🏭</div>
+        <h1 class="page-title">Manufacturing Optimization</h1>
+        <div class="page-content">
+            <p><strong>Client:</strong> TechParts Manufacturing Corporation</p>
+            <br>
+            <p><strong>Challenge:</strong> TechParts faced severe production inefficiencies with equipment downtime averaging 18% annually, costing $32 million in lost production. Their quality control process caught defects only after production, resulting in 8% waste rates and significant rework costs.</p>
+            <br>
+            <p><strong>Solution:</strong> We implemented a comprehensive AI-driven predictive maintenance and quality control system. Using computer vision and IoT sensors, the system monitors equipment health in real-time and predicts failures before they occur. Advanced image recognition inspects products during production to catch defects instantly.</p>
+            <br>
+            <p><strong>Results:</strong></p>
+            <p>• Equipment downtime reduced by 76% through predictive maintenance</p>
+            <p>• Defect detection accuracy reached 99.8% with real-time quality control</p>
+            <p>• Waste rates dropped from 8% to 0.9%, saving $12 million annually</p>
+            <p>• Overall production efficiency increased by 43%</p>
+            <p>• Energy consumption decreased by 28% through optimized machine operations</p>
+            <p>• Maintenance costs reduced by 52% through targeted interventions</p>
+            <br>
+            <p><strong>Impact:</strong> The AI system continuously monitors 1,200+ pieces of equipment across six manufacturing facilities, analyzing 50,000+ data points per second. Production yield has increased from 92% to 99.1%, and TechParts now delivers products 35% faster than competitors. The system's success has enabled TechParts to win three major contracts worth $180 million, directly attributing their competitive advantage to AI-driven operations.</p>
+        </div>
+    </div>
+
+    <div id="case4" class="page content-page hidden">
+        <div class="page-image">🛍️</div>
+        <h1 class="page-title">Retail Personalization</h1>
+        <div class="page-content">
+            <p><strong>Client:</strong> StyleHub Fashion Retail</p>
+            <br>
+            <p><strong>Challenge:</strong> StyleHub experienced declining customer engagement with only 2.3% of website visitors making purchases. Their email marketing campaigns achieved a mere 0.8% click-through rate, and customer lifetime value was stagnant. They lacked insights into individual customer preferences and shopping behaviors.</p>
+            <br>
+            <p><strong>Solution:</strong> We developed an AI-powered personalization engine that analyzes customer behavior, preferences, and purchase history to deliver individualized shopping experiences. The system provides real-time product recommendations, personalized pricing strategies, and dynamic content across all channels including web, mobile, and email.</p>
+            <br>
+            <p><strong>Results:</strong></p>
+            <p>• Conversion rate increased from 2.3% to 8.7%, a 278% improvement</p>
+            <p>• Email click-through rates jumped from 0.8% to 12.4%</p>
+            <p>• Average order value increased by 64% through intelligent product bundling</p>
+            <p>• Customer lifetime value rose by 156%</p>
+            <p>• Cart abandonment decreased from 71% to 34%</p>
+            <p>• Annual revenue increased by $87 million</p>
+            <br>
+            <p><strong>Impact:</strong> The AI system now personalizes experiences for over 8 million customers, processing 200+ behavioral signals per user to deliver perfectly tailored recommendations. Customer satisfaction scores increased from 68% to 92%, and StyleHub has become the fastest-growing fashion retailer in their market segment. The personalization engine also identified 12 new market segments, enabling StyleHub to launch targeted product lines that generated $34 million in first-year revenue.</p>
         </div>
     </div>
 
