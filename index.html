@@ -13,20 +13,75 @@
     <!-- Loading Screen -->
     <div id="loader">
         <div id="loaderContent">
-            <svg id="pyramidWireframe" width="400" height="400" viewBox="0 0 400 400">
-                <!-- Front left edge -->
-                <line class="pyramid-edge edge-1" x1="200" y1="100" x2="100" y2="300" stroke="white" stroke-width="2" stroke-dasharray="100 5 100"/>
-                <!-- Front right edge -->
-                <line class="pyramid-edge edge-2" x1="200" y1="100" x2="300" y2="300" stroke="white" stroke-width="2" stroke-dasharray="100 5 100"/>
-                <!-- Bottom edge -->
-                <line class="pyramid-edge edge-3" x1="100" y1="300" x2="300" y2="300" stroke="white" stroke-width="2" stroke-dasharray="95 5 95"/>
-                
-                <!-- Circles -->
-                <circle class="circle-small" cx="200" cy="200" r="80" fill="none" stroke="white" stroke-width="2" opacity="0" 
-                        stroke-dasharray="70 180" transform="rotate(0 200 200)"/>
-                <circle class="circle-large" cx="200" cy="200" r="140" fill="none" stroke="white" stroke-width="2" opacity="0"
-                        stroke-dasharray="660 240" transform="rotate(0 200 200)"/>
-            </svg>
+            <!-- Animated Logo in Loading Screen -->
+            <div class="logo-container-loader">
+                <!-- Hexagon background pattern -->
+                <svg class="hex-grid-loader" viewBox="0 0 400 400">
+                    <defs>
+                        <pattern id="hexagons-loader" x="0" y="0" width="40" height="35" patternUnits="userSpaceOnUse">
+                            <polygon class="hex-pattern-loader" points="20,0 30,8.66 30,26 20,35 10,26 10,8.66"/>
+                        </pattern>
+                    </defs>
+                    <rect width="400" height="400" fill="url(#hexagons-loader)"/>
+                </svg>
+
+                <!-- Scan line effect -->
+                <div class="scanline-loader"></div>
+
+                <!-- Circles layer -->
+                <div class="circles-container-loader">
+                    <svg viewBox="0 0 400 400">
+                        <!-- Corner brackets -->
+                        <path class="corner-bracket-loader" d="M 80 80 L 80 100 M 80 80 L 100 80"/>
+                        <path class="corner-bracket-loader" d="M 320 80 L 320 100 M 320 80 L 300 80"/>
+                        <path class="corner-bracket-loader" d="M 80 320 L 80 300 M 80 320 L 100 320"/>
+                        <path class="corner-bracket-loader" d="M 320 320 L 320 300 M 320 320 L 300 320"/>
+
+                        <!-- Data points -->
+                        <circle class="data-point-loader" cx="120" cy="120" r="2" style="animation-delay: 0s"/>
+                        <circle class="data-point-loader" cx="280" cy="120" r="2" style="animation-delay: 0.5s"/>
+                        <circle class="data-point-loader" cx="120" cy="280" r="2" style="animation-delay: 1s"/>
+                        <circle class="data-point-loader" cx="280" cy="280" r="2" style="animation-delay: 1.5s"/>
+
+                        <!-- Three-quarter circle -->
+                        <g class="rotate-three-quarter-cw-loader">
+                            <path class="three-quarter-circle-loader" 
+                                  d="M 200 80 A 120 120 0 1 1 80 200" 
+                                  transform="translate(0, 0)"/>
+                        </g>
+
+                        <!-- Half circle -->
+                        <g class="rotate-half-ccw-loader">
+                            <path class="half-circle-loader" 
+                                  d="M 200 120 A 80 80 0 0 1 200 280" 
+                                  transform="translate(0, 0)"/>
+                        </g>
+                    </svg>
+                </div>
+
+                <!-- Triangle (3D rotating) -->
+                <div class="triangle-wrapper-loader">
+                    <svg viewBox="0 0 400 400">
+                        <g>
+                            <line class="triangle-line-loader" x1="200" y1="155" x2="155" y2="240"/>
+                            <line class="triangle-line-loader" x1="200" y1="155" x2="245" y2="240"/>
+                            <line class="triangle-line-loader" x1="155" y1="240" x2="195" y2="240"/>
+                            <line class="triangle-line-loader" x1="205" y1="240" x2="245" y2="240"/>
+                        </g>
+                    </svg>
+                </div>
+
+                <!-- Roman numeral layer -->
+                <div class="circles-container-loader">
+                    <svg viewBox="0 0 400 400">
+                        <g class="roman-numeral-loader">
+                            <rect x="193" y="196" width="13" height="1"/>
+                            <rect x="196" y="196" width="7" height="30"/>
+                            <rect x="193" y="226" width="13" height="1.5"/>
+                        </g>
+                    </svg>
+                </div>
+            </div>
             
             <div class="loader-text" id="loaderText"></div>
         </div>
@@ -48,20 +103,75 @@
     <!-- Navigation -->
     <nav id="mainNav">
         <div class="logo" onclick="navigateToHome()">
-            <div class="logo-icon">
-                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:#00d4ff;stop-opacity:1" />
-                            <stop offset="50%" style="stop-color:#a78bfa;stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:#ec4899;stop-opacity:1" />
-                        </linearGradient>
-                    </defs>
-                    <path d="M 65 15 L 35 50 L 50 50 L 30 85 L 70 45 L 55 45 Z" 
-                          fill="url(#logoGradient)" 
-                          stroke="none"/>
-                    <circle cx="80" cy="75" r="8" fill="url(#logoGradient)"/>
-                </svg>
+            <div class="logo-icon-animated">
+                <div class="animated-logo-small">
+                    <!-- Hexagon background pattern -->
+                    <svg class="hex-grid-small" viewBox="0 0 400 400">
+                        <defs>
+                            <pattern id="hexagons-small" x="0" y="0" width="40" height="35" patternUnits="userSpaceOnUse">
+                                <polygon class="hex-pattern-small" points="20,0 30,8.66 30,26 20,35 10,26 10,8.66"/>
+                            </pattern>
+                        </defs>
+                        <rect width="400" height="400" fill="url(#hexagons-small)"/>
+                    </svg>
+
+                    <!-- Scan line effect -->
+                    <div class="scanline-small"></div>
+
+                    <!-- Circles layer -->
+                    <div class="circles-container-small">
+                        <svg viewBox="0 0 400 400">
+                            <!-- Corner brackets -->
+                            <path class="corner-bracket-small" d="M 80 80 L 80 100 M 80 80 L 100 80"/>
+                            <path class="corner-bracket-small" d="M 320 80 L 320 100 M 320 80 L 300 80"/>
+                            <path class="corner-bracket-small" d="M 80 320 L 80 300 M 80 320 L 100 320"/>
+                            <path class="corner-bracket-small" d="M 320 320 L 320 300 M 320 320 L 300 320"/>
+
+                            <!-- Data points -->
+                            <circle class="data-point-small" cx="120" cy="120" r="2" style="animation-delay: 0s"/>
+                            <circle class="data-point-small" cx="280" cy="120" r="2" style="animation-delay: 0.5s"/>
+                            <circle class="data-point-small" cx="120" cy="280" r="2" style="animation-delay: 1s"/>
+                            <circle class="data-point-small" cx="280" cy="280" r="2" style="animation-delay: 1.5s"/>
+
+                            <!-- Three-quarter circle -->
+                            <g class="rotate-three-quarter-cw-small">
+                                <path class="three-quarter-circle-small" 
+                                      d="M 200 80 A 120 120 0 1 1 80 200" 
+                                      transform="translate(0, 0)"/>
+                            </g>
+
+                            <!-- Half circle -->
+                            <g class="rotate-half-ccw-small">
+                                <path class="half-circle-small" 
+                                      d="M 200 120 A 80 80 0 0 1 200 280" 
+                                      transform="translate(0, 0)"/>
+                            </g>
+                        </svg>
+                    </div>
+
+                    <!-- Triangle (3D rotating) -->
+                    <div class="triangle-wrapper-small">
+                        <svg viewBox="0 0 400 400">
+                            <g>
+                                <line class="triangle-line-small" x1="200" y1="155" x2="155" y2="240"/>
+                                <line class="triangle-line-small" x1="200" y1="155" x2="245" y2="240"/>
+                                <line class="triangle-line-small" x1="155" y1="240" x2="195" y2="240"/>
+                                <line class="triangle-line-small" x1="205" y1="240" x2="245" y2="240"/>
+                            </g>
+                        </svg>
+                    </div>
+
+                    <!-- Roman numeral layer -->
+                    <div class="circles-container-small">
+                        <svg viewBox="0 0 400 400">
+                            <g class="roman-numeral-small">
+                                <rect x="193" y="196" width="13" height="1"/>
+                                <rect x="196" y="196" width="7" height="30"/>
+                                <rect x="193" y="226" width="13" height="1.5"/>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
             </div>
             <div class="logo-text">LEVEL ONE</div>
         </div>
