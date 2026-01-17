@@ -132,15 +132,16 @@ body {
     height: 600px;
     perspective: 1000px;
     animation: logoGlitchLoader 2.5s infinite;
-    margin-bottom: 20px;
-    margin-top: 15vh;
+    margin-bottom: 40px;
+    margin-top: 5vh;
 }
 
 @media (max-width: 768px) {
     .logo-container-loader {
         width: 400px;
         height: 400px;
-        margin-top: 10vh;
+        margin-top: 3vh;
+        margin-bottom: 30px;
     }
 }
 
@@ -264,6 +265,34 @@ body {
     filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.4));
 }
 
+/* Broken decorative circles */
+.broken-circle-1,
+.broken-circle-2,
+.broken-circle-3,
+.broken-circle-4 {
+    stroke: rgba(255, 255, 255, 0.15);
+    stroke-width: 2;
+    fill: none;
+    stroke-linecap: round;
+    stroke-dasharray: 5 10;
+}
+
+.broken-circle-1 {
+    opacity: 0.3;
+}
+
+.broken-circle-2 {
+    opacity: 0.25;
+}
+
+.broken-circle-3 {
+    opacity: 0.2;
+}
+
+.broken-circle-4 {
+    opacity: 0.28;
+}
+
 .rotate-half-ccw-loader {
     animation: rotateCounterClockwiseLoader 6s linear infinite;
     transform-origin: center;
@@ -381,6 +410,28 @@ body {
     overflow: hidden;
     border-radius: 2px;
     transition: opacity 0.5s ease;
+    animation: loadingBarGlitch 3s infinite;
+}
+
+@keyframes loadingBarGlitch {
+    0%, 90%, 100% {
+        transform: translateX(0);
+    }
+    91% {
+        transform: translateX(-2px);
+    }
+    92% {
+        transform: translateX(2px);
+    }
+    93% {
+        transform: translateX(-1px);
+    }
+    94% {
+        transform: translateX(1px);
+    }
+    95% {
+        transform: translateX(0);
+    }
 }
 
 .loading-bar-container.fade-out {
@@ -410,9 +461,9 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 48px;
+    font-size: 40px;
     font-weight: 700;
-    letter-spacing: 8px;
+    letter-spacing: 6px;
     color: #ffffff;
     opacity: 0;
     z-index: 10002;
@@ -420,8 +471,8 @@ body {
 
 @media (min-width: 769px) {
     .loader-level-one-text {
-        font-size: 64px;
-        letter-spacing: 12px;
+        font-size: 52px;
+        letter-spacing: 10px;
     }
 }
 
@@ -434,7 +485,7 @@ body {
 }
 
 .loader-level-one-text.fade-out-rl {
-    animation: loaderTextFadeOutRL 1.5s ease forwards;
+    animation: loaderTextFadeOut 1.5s ease forwards;
 }
 
 @keyframes loaderTextFadeIn {
@@ -489,14 +540,12 @@ body {
     }
 }
 
-@keyframes loaderTextFadeOutRL {
+@keyframes loaderTextFadeOut {
     0% {
         opacity: 1;
-        clip-path: inset(0 0 0 0);
     }
     100% {
         opacity: 0;
-        clip-path: inset(0 0 0 100%);
     }
 }
 
