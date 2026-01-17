@@ -73,35 +73,32 @@ animateLEDRain();
 // Loading Animation Timeline
 // Phase 1: Loading bar fills (5 seconds)
 setTimeout(() => {
-    // After loading bar completes, fade out loader
-    document.getElementById('loader').classList.add('hidden');
+    // After loading bar completes, fade out the bar
+    const loadingBarContainer = document.getElementById('loadingBarContainer');
+    loadingBarContainer.classList.add('fade-out');
     
-    // Show text transition screen
-    const textTransition = document.getElementById('textTransition');
-    textTransition.classList.remove('hidden');
-    
+    // 1 second after bar fades, fade out logo
     setTimeout(() => {
-        textTransition.classList.add('active');
+        const logoContainer = document.getElementById('logoContainerLoader');
+        logoContainer.classList.add('fade-out');
         
-        // Fade in text
-        const transitionText = document.getElementById('transitionText');
-        transitionText.classList.add('fade-in');
-        
-        // After fade in, do glitch
+        // 2 seconds after logo starts fading, fade in text
         setTimeout(() => {
-            transitionText.classList.add('glitch');
+            const loaderText = document.getElementById('loaderLevelOneText');
+            loaderText.classList.add('fade-in');
             
-            // After glitch, fade out right to left
+            // After text fades in (1 second), start glitch for 2 seconds
             setTimeout(() => {
-                transitionText.classList.remove('glitch');
-                transitionText.classList.add('fade-out');
+                loaderText.classList.add('glitch');
                 
-                // After text fades out, show main page
+                // After 2 seconds of glitch, stop glitch and fade out right to left
                 setTimeout(() => {
-                    textTransition.classList.remove('active');
+                    loaderText.classList.remove('glitch');
+                    loaderText.classList.add('fade-out-rl');
                     
+                    // After text fades out, hide loader and show main page
                     setTimeout(() => {
-                        textTransition.classList.add('hidden');
+                        document.getElementById('loader').classList.add('hidden');
                         
                         // Show navigation and home page
                         document.getElementById('mainNav').classList.remove('hidden');
@@ -112,11 +109,11 @@ setTimeout(() => {
                             ledRainActive = true;
                             ledCanvas.classList.add('active');
                         }, 1000);
-                    }, 500);
-                }, 1500);
-            }, 2000);
-        }, 800);
-    }, 100);
+                    }, 1500);
+                }, 2000);
+            }, 1000);
+        }, 2000);
+    }, 1000);
 }, 5000);
 
 // Global state
