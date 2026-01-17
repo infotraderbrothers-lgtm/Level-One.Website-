@@ -70,61 +70,54 @@ window.addEventListener('resize', () => {
 initLEDRain();
 animateLEDRain();
 
-// Loading Animation
-const loaderText = document.getElementById('loaderText');
-const text = 'LEVEL ONE';
-
-// Show text after loading bar is complete
+// Loading Animation Timeline
+// Phase 1: Loading bar fills (5 seconds)
 setTimeout(() => {
-    text.split('').forEach((char, index) => {
-        const span = document.createElement('span');
-        span.className = 'hex-letter';
-        span.textContent = char;
-        span.style.color = '#ffffff';
-        loaderText.appendChild(span);
-        
-        setTimeout(() => {
-            span.classList.add('active');
-            
-            const colors = ['#00d4ff', '#a78bfa', '#ec4899', '#8b5cf6', '#ffffff'];
-            let colorIndex = 0;
-            const colorInterval = setInterval(() => {
-                if (colorIndex < colors.length - 1) {
-                    span.style.color = colors[colorIndex];
-                    colorIndex++;
-                } else {
-                    span.style.color = '#ffffff';
-                    clearInterval(colorInterval);
-                }
-            }, 100);
-        }, index * 150);
-    });
-}, 5000);
-
-// Fade out text from right to left
-setTimeout(() => {
-    const letters = document.querySelectorAll('.hex-letter');
-    letters.forEach((letter, index) => {
-        setTimeout(() => {
-            letter.classList.add('fade-out');
-        }, (letters.length - 1 - index) * 100);
-    });
-}, 7500);
-
-// Hide loader and show home page with header
-setTimeout(() => {
+    // After loading bar completes, fade out loader
     document.getElementById('loader').classList.add('hidden');
     
-    // Start LED rain
-    ledRainActive = true;
-    ledCanvas.classList.add('active');
+    // Show text transition screen
+    const textTransition = document.getElementById('textTransition');
+    textTransition.classList.remove('hidden');
     
-    // Show navigation and home page
     setTimeout(() => {
-        document.getElementById('mainNav').classList.remove('hidden');
-        document.getElementById('home').classList.add('visible');
+        textTransition.classList.add('active');
+        
+        // Fade in text
+        const transitionText = document.getElementById('transitionText');
+        transitionText.classList.add('fade-in');
+        
+        // After fade in, do glitch
+        setTimeout(() => {
+            transitionText.classList.add('glitch');
+            
+            // After glitch, fade out right to left
+            setTimeout(() => {
+                transitionText.classList.remove('glitch');
+                transitionText.classList.add('fade-out');
+                
+                // After text fades out, show main page
+                setTimeout(() => {
+                    textTransition.classList.remove('active');
+                    
+                    setTimeout(() => {
+                        textTransition.classList.add('hidden');
+                        
+                        // Show navigation and home page
+                        document.getElementById('mainNav').classList.remove('hidden');
+                        document.getElementById('home').classList.add('visible');
+                        
+                        // Start LED rain 1 second after content appears
+                        setTimeout(() => {
+                            ledRainActive = true;
+                            ledCanvas.classList.add('active');
+                        }, 1000);
+                    }, 500);
+                }, 1500);
+            }, 2000);
+        }, 800);
     }, 100);
-}, 9000);
+}, 5000);
 
 // Global state
 let currentPage = 'home';
