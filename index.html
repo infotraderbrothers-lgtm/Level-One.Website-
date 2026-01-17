@@ -12,9 +12,19 @@
 
     <!-- Loading Screen -->
     <div id="loader">
+        <!-- Hexagon background pattern for entire screen -->
+        <svg class="hex-grid-loader-fullscreen" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
+            <defs>
+                <pattern id="hexagons-fullscreen" x="0" y="0" width="8" height="7" patternUnits="userSpaceOnUse">
+                    <polygon class="hex-pattern-fullscreen" points="4,0 6,1.732 6,5.196 4,7 2,5.196 2,1.732"/>
+                </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#hexagons-fullscreen)"/>
+        </svg>
+
         <div id="loaderContent">
             <!-- Animated Logo in Loading Screen -->
-            <div class="logo-container-loader">
+            <div class="logo-container-loader" id="logoContainerLoader">
                 <!-- Hexagon background pattern -->
                 <svg class="hex-grid-loader" viewBox="0 0 400 400">
                     <defs>
@@ -38,10 +48,10 @@
                         <path class="corner-bracket-loader" d="M 320 320 L 320 300 M 320 320 L 300 320"/>
 
                         <!-- Data points -->
-                        <circle class="data-point-loader" cx="120" cy="120" r="2" style="animation-delay: 0s"/>
-                        <circle class="data-point-loader" cx="280" cy="120" r="2" style="animation-delay: 0.5s"/>
-                        <circle class="data-point-loader" cx="120" cy="280" r="2" style="animation-delay: 1s"/>
-                        <circle class="data-point-loader" cx="280" cy="280" r="2" style="animation-delay: 1.5s"/>
+                        <circle class="data-point-loader" cx="120" cy="120" r="3" style="animation-delay: 0s"/>
+                        <circle class="data-point-loader" cx="280" cy="120" r="3" style="animation-delay: 0.5s"/>
+                        <circle class="data-point-loader" cx="120" cy="280" r="3" style="animation-delay: 1s"/>
+                        <circle class="data-point-loader" cx="280" cy="280" r="3" style="animation-delay: 1.5s"/>
 
                         <!-- Three-quarter circle -->
                         <g class="rotate-three-quarter-cw-loader">
@@ -84,9 +94,12 @@
             </div>
 
             <!-- Loading Bar -->
-            <div class="loading-bar-container">
+            <div class="loading-bar-container" id="loadingBarContainer">
                 <div class="loading-bar" id="loadingBar"></div>
             </div>
+
+            <!-- Text LEVEL ONE -->
+            <div class="loader-level-one-text" id="loaderLevelOneText">LEVEL ONE</div>
         </div>
     </div>
 
