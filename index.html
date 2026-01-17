@@ -12,16 +12,6 @@
 
     <!-- Loading Screen -->
     <div id="loader">
-        <!-- Hexagon background for loader -->
-        <svg class="hex-grid-loader-bg" viewBox="0 0 400 400">
-            <defs>
-                <pattern id="hexagons-loader-bg" x="0" y="0" width="40" height="35" patternUnits="userSpaceOnUse">
-                    <polygon class="hex-pattern-loader-bg" points="20,0 30,8.66 30,26 20,35 10,26 10,8.66"/>
-                </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#hexagons-loader-bg)"/>
-        </svg>
-
         <div id="loaderContent">
             <!-- Animated Logo in Loading Screen -->
             <div class="logo-container-loader">
@@ -97,9 +87,12 @@
             <div class="loading-bar-container">
                 <div class="loading-bar" id="loadingBar"></div>
             </div>
-            
-            <div class="loader-text" id="loaderText"></div>
         </div>
+    </div>
+
+    <!-- Text Transition Screen -->
+    <div id="textTransition" class="text-transition hidden">
+        <div class="transition-text" id="transitionText">LEVEL ONE</div>
     </div>
 
     <!-- Mini Loader (for page transitions) -->
