@@ -4,7 +4,7 @@ const ledCtx = ledCanvas.getContext('2d');
 ledCanvas.width = window.innerWidth;
 ledCanvas.height = window.innerHeight;
 
-let ledRainActive = true;
+let ledRainActive = false;
 let ledDrops = [];
 
 class LEDDrop {
@@ -74,6 +74,7 @@ animateLEDRain();
 const loaderText = document.getElementById('loaderText');
 const text = 'LEVEL ONE';
 
+// Show text after loading bar is complete
 setTimeout(() => {
     text.split('').forEach((char, index) => {
         const span = document.createElement('span');
@@ -98,7 +99,7 @@ setTimeout(() => {
             }, 100);
         }, index * 150);
     });
-}, 3000);
+}, 5000);
 
 // Fade out text from right to left
 setTimeout(() => {
@@ -108,13 +109,22 @@ setTimeout(() => {
             letter.classList.add('fade-out');
         }, (letters.length - 1 - index) * 100);
     });
-}, 5500);
+}, 7500);
 
-// Hide loader and show home page
+// Hide loader and show home page with header
 setTimeout(() => {
     document.getElementById('loader').classList.add('hidden');
-    document.getElementById('home').classList.add('visible');
-}, 7000);
+    
+    // Start LED rain
+    ledRainActive = true;
+    ledCanvas.classList.add('active');
+    
+    // Show navigation and home page
+    setTimeout(() => {
+        document.getElementById('mainNav').classList.remove('hidden');
+        document.getElementById('home').classList.add('visible');
+    }, 100);
+}, 9000);
 
 // Global state
 let currentPage = 'home';
